@@ -8,6 +8,7 @@ class SheetFrame:
     def __init__(self, parent, pool):
         self.frame = ttk.Frame(parent)
         self.pool = pool
+        self.flag = False
 
         columnLabels = [ttk.Label(self.frame, text="{0}".format(x))
                         for x in range(5)]
@@ -21,11 +22,11 @@ class SheetFrame:
 
         self.strVars = [StringVar() for x in range(5*9)]
 
-        entryVars = [ttk.Entry(self.frame, textvariable=self.strVars[x])
+        self.entryVars = [ttk.Entry(self.frame, textvariable=self.strVars[x])
                      for x in range(5*9)]
         for i in range(9):
             for j in range(5):
-                entryVars[i*5+j].grid(column=j+1, row=i+1, sticky=W)
+                self.entryVars[i*5+j].grid(column=j+1, row=i+1, sticky=W)
 
         initButton = ttk.Button(self.frame, text="初始化", command=self.initialize)
         initButton.grid(column=2, row=10, sticky=W)
@@ -39,10 +40,28 @@ class SheetFrame:
             if x:
                 streaming.append({"ID":i, "FORMULA":x})
 
-        self.pool.queues[0].push(json.dumps(streaming))
+        q = self.pool.getQueue("INITIALIZE")
+        q.push(json.dumps(streaming))
+
+        for i in range(9):
+            for j in range(5):
+                self.entryVars[i*5+j].delete(0, 'end')
+                
+        self.update()
 
     def send(self):
-        pass
+        payss
 
-    def update(self, flag):
-        pass
+    def update(self):
+        if self.flag:
+            pass
+        else:
+            q = self.pool.getQueue("STREAMING")
+            if len(q.queue) > 0:
+                s = json.loads(q.pop())
+                print s
+                self.flag = True
+                for x in s:
+                    
+                
+        self.frame.after(1000, update)
