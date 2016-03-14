@@ -45,8 +45,8 @@ class ConnectionFrame:
         self.pool.port = int(self.port.get())
         self.pool.username = self.username.get()
         self.pool.password = self.password.get()
-        self.pool.new("publish", "INITIALIZE")
-        self.pool.new("subscribe", "STREAMING")
+        self.pool.new("PUBLISH", "INITIALIZE")
+        self.pool.new("SUBSCRIBE", "STREAMING")
 
     def close(self):
         self.pool.clear()

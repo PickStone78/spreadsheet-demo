@@ -17,7 +17,7 @@ class ThreadPool:
         self.queues.append(queue)
         self.hashes[channelName] = len(self.queues) - 1
 
-        if channelType == "publish":
+        if channelType == "PUBLISH":
             threadDemo = exchanger.Publisher(self.host,
                                              self.port,
                                              self.username,
@@ -26,7 +26,7 @@ class ThreadPool:
                                              queue)
             threadDemo.start()
             self.threads.append(threadDemo)
-        if channelType == "subscribe":
+        if channelType == "SUBSCRIBE":
             threadDemo = exchanger.Consumer(self.host,
                                             self.port,
                                             self.username,
